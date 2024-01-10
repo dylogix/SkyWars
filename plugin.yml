@@ -1,0 +1,10 @@
+name: SkyWars
+version: 1.0.0-SNAPSHOT
+author: dylogix
+main: de.dylogix.skywars.main.Main
+api-version: '1.20'
+commands:
+  build:
+    description: Toggle build override in lobby
+  setspawn:
+    description: Set game spawn locations
