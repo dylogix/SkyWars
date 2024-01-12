@@ -1,7 +1,7 @@
 package de.dylogix.skywars.listener;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +13,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import de.dylogix.skywars.gamestate.GameState;
 import de.dylogix.skywars.main.Main;
+import de.dylogix.skywars.methods.GameStateHandler;
+import de.dylogix.skywars.methods.LocationHandler;
 
 public class JoinQuitListener implements Listener {
 	
@@ -22,36 +24,44 @@ public class JoinQuitListener implements Listener {
 		e.setJoinMessage(null);
 		
 		if(Main.gs == GameState.LOBBY) {
-			Bukkit.broadcastMessage(Main.prefix + p.getName() + " joined the lobby.");
-			
+			if(Bukkit.getOnlinePlayers().size() > Main.cfg.getInt("config.max_players")) {
+				p.kickPlayer("§cThis lobby is already full.");
+			} else {				
+				p.getInventory().clear();
+				p.getInventory().setArmorContents(null);
+				p.getInventory().setItemInOffHand(null);
+				p.setLevel(0);
+				p.setExp(0);
+				p.setFoodLevel(20);
+				
+				ItemStack kitselect = new ItemStack(Material.CHEST);
+				ItemMeta kitmeta = kitselect.getItemMeta();
+				kitmeta.setDisplayName("§akit select");
+				kitselect.setItemMeta(kitmeta);
+				
+				p.getInventory().setItem(4, kitselect);
+				
+				LocationHandler.teleportPlayerToLobby(p);
+			}
+		} else if(Main.gs == GameState.ENDING) {
 			p.getInventory().clear();
 			p.getInventory().setArmorContents(null);
 			p.getInventory().setItemInOffHand(null);
-			p.setLevel(2024);
+			p.setLevel(0);
+			p.setExp(0);
+			p.setFoodLevel(20);
+
+			LocationHandler.teleportPlayerToLobby(p);
+		} else {			
+			p.getInventory().clear();
+			p.getInventory().setArmorContents(null);
+			p.getInventory().setItemInOffHand(null);
+			p.setLevel(0);
 			p.setExp(0);
 			p.setFoodLevel(20);
 			
-			ItemStack kitselect = new ItemStack(Material.CHEST);
-			ItemMeta kitmeta = kitselect.getItemMeta();
-			kitmeta.setDisplayName("§akit select");
-			kitselect.setItemMeta(kitmeta);
-			
-			p.getInventory().setItem(4, kitselect);
-			
-			if(Main.cfg.contains("locations.lobby")) {
-				float x = (float) Main.cfg.getDouble("locations.lobby.x");
-				float y = (float) Main.cfg.getDouble("locations.lobby.y");
-				float z = (float) Main.cfg.getDouble("locations.lobby.z");
-				float yaw = (float) Main.cfg.getDouble("locations.lobby.yaw");
-				float pitch = (float) Main.cfg.getDouble("locations.lobby.pitch");
-				String world = Main.cfg.getString("locations.lobby.world");
-				
-				Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-				loc.setYaw(yaw);
-				loc.setPitch(pitch);
-				
-				p.teleport(loc);
-			}
+			p.setGameMode(GameMode.SPECTATOR);
+			LocationHandler.teleportPlayerToSpecSpawn(p);
 		}
 	}
 	
@@ -59,7 +69,10 @@ public class JoinQuitListener implements Listener {
 	public void onQuit(PlayerQuitEvent e) {
 		e.setQuitMessage(null);
 		
-		if(Main.gs == GameState.LOBBY)
-			Bukkit.broadcastMessage(Main.prefix + e.getPlayer().getName() + " left the lobby.");
+		Main.alive.remove(e.getPlayer());
+		
+		if(Main.gs == GameState.INGAME) {
+			GameStateHandler.handleDeath(e.getPlayer());
+		}
 	}
 }

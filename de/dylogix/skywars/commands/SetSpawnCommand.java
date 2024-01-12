@@ -19,12 +19,12 @@ public class SetSpawnCommand implements CommandExecutor {
 			if(!p.isOp()) {
 				p.sendMessage(Main.prefix + "You don't have the permission to use this command!");
 			} else {
+				String usagemessage = Main.prefix + "Usage: /setspawn <mapname|lobby> <count>";
+				
 				if(args.length == 0) {
-					p.sendMessage(Main.prefix + "Usage: /setspawn <mapname|lobby> <count>");
+					p.sendMessage(usagemessage);
 				} else {
 					if(args[0].equalsIgnoreCase("lobby")) {
-						p.sendMessage(Main.prefix + "Updated lobby spawn location.");
-
 						Main.cfg.set("locations.lobby.x", p.getLocation().getX());
 						Main.cfg.set("locations.lobby.y", p.getLocation().getY());
 						Main.cfg.set("locations.lobby.z", p.getLocation().getZ());
@@ -37,9 +37,30 @@ public class SetSpawnCommand implements CommandExecutor {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-						
+
+						p.sendMessage(Main.prefix + "Updated lobby spawn location.");
 					} else {
-						p.sendMessage(Main.prefix + "else" + args[0]);
+						if(args.length != 2) {
+							p.sendMessage(usagemessage);
+						} else {
+							String mapname = args[0];
+							String spawncount = args[1];
+
+							Main.cfg.set("locations.maps." + mapname + ".spawn" + spawncount + ".x", p.getLocation().getX());
+							Main.cfg.set("locations.maps." + mapname + ".spawn" + spawncount + ".y", p.getLocation().getY());
+							Main.cfg.set("locations.maps." + mapname + ".spawn" + spawncount + ".z", p.getLocation().getZ());
+							Main.cfg.set("locations.maps." + mapname + ".spawn" + spawncount + ".yaw", p.getLocation().getYaw());
+							Main.cfg.set("locations.maps." + mapname + ".spawn" + spawncount + ".pitch", p.getLocation().getPitch());
+							Main.cfg.set("locations.maps." + mapname + ".spawn" + spawncount + ".world", p.getLocation().getWorld().getName());
+							
+							try {
+								Main.cfg.save(Main.config);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+
+							p.sendMessage(Main.prefix + "Saved spawn §a" + spawncount + "§7 for the map §a" + mapname + "§7.");
+						}
 					}
 				}
 			}

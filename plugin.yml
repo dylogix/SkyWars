@@ -8,3 +8,5 @@ commands:
     description: Toggle build override in lobby
   setspawn:
     description: Set game spawn locations
+  test:
+    description: Simply for testing purposes

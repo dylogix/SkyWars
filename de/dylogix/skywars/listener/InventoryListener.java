@@ -35,5 +35,4 @@ public class InventoryListener implements Listener {
 		if(Main.gs != GameState.INGAME && !Main.buildoverride.contains(e.getPlayer()))
 			e.setCancelled(true);
 	}
-	
 }
