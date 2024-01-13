@@ -8,5 +8,7 @@ commands:
     description: Toggle build override in lobby
   setspawn:
     description: Set game spawn locations
+  start:
+    description: Fast forward the lobby countdown to 5 seconds
   test:
     description: Simply for testing purposes

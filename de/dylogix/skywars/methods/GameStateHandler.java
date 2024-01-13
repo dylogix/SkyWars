@@ -18,7 +18,7 @@ public class GameStateHandler implements Listener{
 	private static de.dylogix.skywars.main.Main pl;
 	
 	public static int lobby_countdown;
-	static int lobby_counter;
+	public static int lobby_counter;
 
 	public static int game_countdown;
 	static int game_counter;
@@ -28,7 +28,7 @@ public class GameStateHandler implements Listener{
 	
 	public static void startLobbyCountdown() {
 		if(!Bukkit.getScheduler().isCurrentlyRunning(lobby_countdown)){
-			lobby_counter = 11;
+			lobby_counter = 61;
 			lobby_countdown = Bukkit.getScheduler().scheduleSyncRepeatingTask(pl, new Runnable() {
 
 				@Override
@@ -36,12 +36,11 @@ public class GameStateHandler implements Listener{
 					if(Bukkit.getOnlinePlayers().size() > 1){
 						lobby_counter--;
 						
-						float onepercent = (float) (100.0 / 60.0);
-						float current_percentage = lobby_counter * onepercent;
+						float current_percentage = lobby_counter * (100.0F / 60.0F);
 						
 						for(Player all : Bukkit.getOnlinePlayers()){
 							all.setLevel(lobby_counter);
-							all.setExp((float) current_percentage /100);
+							all.setExp(current_percentage / 100.0F);
 						}
 							
 						if(lobby_counter == 60 || lobby_counter == 10 || lobby_counter == 5 || lobby_counter == 4 || lobby_counter == 3 || lobby_counter == 2 ) {
@@ -103,6 +102,7 @@ public class GameStateHandler implements Listener{
 							Bukkit.getScheduler().cancelTask(game_countdown);
 							
 							Main.movelock.remove(all);
+							Main.chestuse = true;
 							
 							Main.gs = GameState.INGAME;
 							
@@ -127,7 +127,6 @@ public class GameStateHandler implements Listener{
 			end_counter = 11;
 			end_countdown = Bukkit.getScheduler().scheduleSyncRepeatingTask(pl, new Runnable() {
 
-				@SuppressWarnings("deprecation")
 				@Override
 				public void run() {
 					end_counter--;
@@ -135,12 +134,17 @@ public class GameStateHandler implements Listener{
 						if(end_counter == 0) {
 							Bukkit.getScheduler().cancelTask(end_countdown);
 							for(Player all : Bukkit.getOnlinePlayers()){	
-								all.kickPlayer("§cLobby closed.");
+								all.kickPlayer("§cServer is restarting.");
 							}
-							Bukkit.getServer().shutdown();
+							Main.gs = GameState.RESETTING;
+							MapresetHandler.runMapreset();
 						} else {
+							float current_percentage = end_counter * (100.0F / 10.0F);
+							
 							for(Player all : Bukkit.getOnlinePlayers()){
-								all.sendTitle("", "§cLobby cloeses in " + end_counter);
+								all.setLevel(end_counter);
+								all.setExp(current_percentage / 100.0F);
+								all.playSound(all, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10.0F, 10.0F);
 							}
 						}
 				}
@@ -163,6 +167,7 @@ public class GameStateHandler implements Listener{
 				all.setHealth(20);
 				all.setFoodLevel(20);
 				
+				Main.chestuse = false;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(pl, () -> LocationHandler.teleportPlayerToLobby(all));
 				
 				all.sendTitle("§7» §f§lSkyWars §7«", "§a" + Main.alive.get(0).getName() + " §7won §aSkyWars§7!");

@@ -5,6 +5,7 @@ public enum GameState {
 	LOBBY,
 	STARTING,
 	INGAME,
-	ENDING
+	ENDING,
+	RESETTING
 	
 }

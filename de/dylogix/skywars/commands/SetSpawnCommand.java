@@ -17,7 +17,7 @@ public class SetSpawnCommand implements CommandExecutor {
 		
 		if(cmd.getName().equalsIgnoreCase("setspawn")) {
 			if(!p.isOp()) {
-				p.sendMessage(Main.prefix + "You don't have the permission to use this command!");
+				p.sendMessage(Main.prefix + "§cYou don't have the permission to use this command!");
 			} else {
 				String usagemessage = Main.prefix + "Usage: /setspawn <mapname|lobby> <count>";
 				

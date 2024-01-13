@@ -26,7 +26,7 @@ public class JoinQuitListener implements Listener {
 		if(Main.gs == GameState.LOBBY) {
 			if(Bukkit.getOnlinePlayers().size() > Main.cfg.getInt("config.max_players")) {
 				p.kickPlayer("§cThis lobby is already full.");
-			} else {				
+			} else {
 				p.getInventory().clear();
 				p.getInventory().setArmorContents(null);
 				p.getInventory().setItemInOffHand(null);
@@ -41,7 +41,13 @@ public class JoinQuitListener implements Listener {
 				
 				p.getInventory().setItem(4, kitselect);
 				
+				ChestListener.openchests.put(e.getPlayer(), 0);
+				
 				LocationHandler.teleportPlayerToLobby(p);
+				
+				if(Bukkit.getOnlinePlayers().size() >= Main.cfg.getInt("config.min_players")) {
+					GameStateHandler.startLobbyCountdown();
+				}
 			}
 		} else if(Main.gs == GameState.ENDING) {
 			p.getInventory().clear();
@@ -52,7 +58,9 @@ public class JoinQuitListener implements Listener {
 			p.setFoodLevel(20);
 
 			LocationHandler.teleportPlayerToLobby(p);
-		} else {			
+		} else if(Main.gs == GameState.RESETTING) {		
+			p.kickPlayer("§cThe game has ended. Please wait for the server to restart.");
+		} else {
 			p.getInventory().clear();
 			p.getInventory().setArmorContents(null);
 			p.getInventory().setItemInOffHand(null);
