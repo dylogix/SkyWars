@@ -2,7 +2,7 @@
 
 SkyWars is a popular gamemode within Minecraft where a bunch of players each spawn on their own floating island with loot chests. Goal is to eliminate all other players and be the last survivor.
 
-Supported Spigot version: <b>1.20.1</b>
+Tested Spigot version: <b>1.20.1</b>
 
 ---
 
@@ -28,3 +28,7 @@ config:
 ### Map reset:
 
 In order to use the mapreset feature place a backup of the map you're using in the <code>plugins/SkyWars/maps</code> folder. Once a game is over the plugin will overwrite the in the config.yml specified mapfolder with the version in <code>plugins/SkyWars/maps</code>.
+
+### Chests:
+
+There are two types of chests. Normal (regular chest) and Epic (redstone/trapped chest).
