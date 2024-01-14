@@ -24,10 +24,10 @@ config:
   max_players: 8
 ```
 
-### Map reset
+## Map reset
 
 In order to use the mapreset feature place a backup of the map you're using in the <code>plugins/SkyWars/maps</code> folder. Once a game is over the plugin will overwrite the in the config.yml specified mapfolder with the version in <code>plugins/SkyWars/maps</code>.
 
-### Chests
+## Chests
 
 There are two types of chests. Normal (regular chest) and Epic (redstone/trapped chest).
