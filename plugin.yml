@@ -1,5 +1,5 @@
 name: SkyWars
-version: 1.0.0
+version: 1.0.1
 author: dylogix
 main: de.dylogix.skywars.main.Main
 api-version: '1.20'
