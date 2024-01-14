@@ -16,7 +16,7 @@ public class SetSpawnCommand implements CommandExecutor {
 		Player p = (Player) sender;
 		
 		if(cmd.getName().equalsIgnoreCase("setspawn")) {
-			if(!p.isOp()) {
+			if(!p.hasPermission("skywars.setup") || p.hasPermission("skywars.*")) {
 				p.sendMessage(Main.prefix + "§cYou don't have the permission to use this command!");
 			} else {
 				String usagemessage = Main.prefix + "Usage: /setspawn <mapname|lobby> <count>";

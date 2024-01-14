@@ -14,7 +14,7 @@ public class BuildCommand implements CommandExecutor {
 		Player p = (Player) sender;
 		
 		if(cmd.getName().equalsIgnoreCase("build")) {
-			if(!p.isOp()) {
+			if(!p.hasPermission("skywars.setup") || p.hasPermission("skywars.*")) {
 				p.sendMessage(Main.prefix + "You don't have the permission to use this command!");
 			} else {
 				if(Main.buildoverride.contains(p)) {
@@ -25,9 +25,7 @@ public class BuildCommand implements CommandExecutor {
 					p.sendMessage(Main.prefix + "Build override enabled.");
 				}
 			}
-		}
-		
+		}	
 		return true;
 	}
-
 }
