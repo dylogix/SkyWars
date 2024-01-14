@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import de.dylogix.skywars.gamestate.GameState;
+import de.dylogix.skywars.enums.GameState;
 import de.dylogix.skywars.main.Main;
 import de.dylogix.skywars.methods.GameStateHandler;
 

@@ -11,7 +11,8 @@ public class MoveListener implements Listener {
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
 		if(Main.movelock.contains(e.getPlayer())) {
-			e.setCancelled(true);
+			if(e.getFrom().getX() != e.getTo().getX() || e.getFrom().getZ() != e.getTo().getZ())
+			    e.setTo(e.getFrom());
 		}
 	}
 	

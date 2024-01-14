@@ -5,7 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
-import de.dylogix.skywars.gamestate.GameState;
+import de.dylogix.skywars.enums.GameState;
 import de.dylogix.skywars.main.Main;
 
 public class DamageListener implements Listener {

@@ -11,9 +11,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import de.dylogix.skywars.gamestate.GameState;
+import de.dylogix.skywars.enums.GameState;
+import de.dylogix.skywars.enums.Kit;
 import de.dylogix.skywars.main.Main;
 import de.dylogix.skywars.methods.GameStateHandler;
+import de.dylogix.skywars.methods.KitHandler;
 import de.dylogix.skywars.methods.LocationHandler;
 
 public class JoinQuitListener implements Listener {
@@ -48,6 +50,8 @@ public class JoinQuitListener implements Listener {
 				if(Bukkit.getOnlinePlayers().size() >= Main.cfg.getInt("config.min_players")) {
 					GameStateHandler.startLobbyCountdown();
 				}
+				
+				KitHandler.assignKit(p, Kit.STARTER);
 			}
 		} else if(Main.gs == GameState.ENDING) {
 			p.getInventory().clear();

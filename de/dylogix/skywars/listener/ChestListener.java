@@ -7,11 +7,13 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -21,6 +23,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
+import de.dylogix.skywars.enums.GameState;
 import de.dylogix.skywars.main.Main;
 
 public class ChestListener implements Listener{	
@@ -38,10 +41,6 @@ public class ChestListener implements Listener{
     
 	public static ItemStack create(Material mat, int amount) {
         return new ItemStack(mat, amount);
-    }
-	
-	public static ItemStack createItemStack(ItemStack Itemstack) {
-        return Itemstack;
     }
 	
 	public ItemStack createPotion(Material mat, PotionType pt, int amount, Boolean arg, Boolean arg2) {
@@ -62,52 +61,60 @@ public class ChestListener implements Listener{
     	return item;
 	}
 	
+	@EventHandler 
+	public void onChestClose(InventoryCloseEvent e) {
+		Player p = (Player) e.getPlayer();
+		if(e.getView().getTitle().equals("§2Normal Chest") || e.getView().getTitle().equals("§5Epic Chest")) {
+			p.playSound(p, Sound.BLOCK_CHEST_CLOSE, 1, 1);
+		}
+	}
+	
     @EventHandler
     public void onChestOpen(PlayerInteractEvent e) {
     	try{
-    	if(Main.chestuse == true){
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.CHEST){
-        	e.setCancelled(true);
-        	if(!Main.alive.contains(e.getPlayer())){
-        		return;
-        	}
-        	if (!ChestListener.chests.containsKey((Object)e.getClickedBlock().getLocation())) {
-                this.registerLoot();
-                
-                openchests.put(e.getPlayer(), openchests.get(e.getPlayer()) + 1);
-
-                Inventory inv = Bukkit.createInventory((InventoryHolder)null, (int)27, (String)"§aNormal Chest");
-                int i = 0;
-                while (i < rndInt(15, 22)) {
-                    inv.setItem(rndInt(0, inv.getSize() - 1), this.loot.get(rndInt(0, this.loot.size() - 1)));
-                    ++i;
-                }
-                ChestListener.chests.put(e.getClickedBlock().getLocation(), inv);
-            }
-            e.getPlayer().openInventory(ChestListener.chests.get((Object)e.getClickedBlock().getLocation()));
-        } else if(e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.TRAPPED_CHEST){
-        	e.setCancelled(true);
-        	if(!Main.alive.contains(e.getPlayer())){
-        		return;
-        	}
-        	if (!ChestListener.chests.containsKey((Object)e.getClickedBlock().getLocation())) {
-                this.registerEpicLoot();
-                
-                openchests.put(e.getPlayer(), openchests.get(e.getPlayer()) + 1);
-                Inventory inv = Bukkit.createInventory((InventoryHolder)null, (int)27, (String)"§5Epic Chest");
-                int i = 0;
-                while (i < rndInt(15, 22)) {
-                    inv.setItem(rndInt(0, inv.getSize() - 1), this.epicloot.get(rndInt(0, this.epicloot.size() - 1)));
-                    ++i;
-                }
-                ChestListener.chests.put(e.getClickedBlock().getLocation(), inv);
-            }
-            e.getPlayer().openInventory(ChestListener.chests.get((Object)e.getClickedBlock().getLocation()));
-        }
-    	}else{
-    		e.setCancelled(true);
-    	}
-    }catch(Exception e1){ e1.printStackTrace(); }
+	    	if(Main.gs == GameState.INGAME){
+	    		if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.CHEST){
+		        	e.setCancelled(true);
+		        	if(!Main.alive.contains(e.getPlayer())){
+		        		return;
+		        	}
+		        	if (!ChestListener.chests.containsKey((Object)e.getClickedBlock().getLocation())) {
+		                this.registerLoot();
+		                
+		                openchests.put(e.getPlayer(), openchests.get(e.getPlayer()) + 1);
+		
+		                Inventory inv = Bukkit.createInventory((InventoryHolder)null, (int)27, (String)"§2Normal Chest");
+		                int i = 0;
+		                while (i < rndInt(15, 22)) {
+		                    inv.setItem(rndInt(0, inv.getSize() - 1), this.loot.get(rndInt(0, this.loot.size() - 1)));
+		                    ++i;
+		                }
+		                ChestListener.chests.put(e.getClickedBlock().getLocation(), inv);
+		            }
+		        	e.getPlayer().openInventory(ChestListener.chests.get((Object)e.getClickedBlock().getLocation()));
+		        	e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+		        } else if(e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.TRAPPED_CHEST){
+		        	e.setCancelled(true);
+		        	if(!Main.alive.contains(e.getPlayer())){
+		        		return;
+		        	}
+		        	if (!ChestListener.chests.containsKey((Object)e.getClickedBlock().getLocation())) {
+		                this.registerEpicLoot();
+		                
+		                openchests.put(e.getPlayer(), openchests.get(e.getPlayer()) + 1);
+		                Inventory inv = Bukkit.createInventory((InventoryHolder)null, (int)27, (String)"§5Epic Chest");
+		                int i = 0;
+		                while (i < rndInt(15, 22)) {
+		                    inv.setItem(rndInt(0, inv.getSize() - 1), this.epicloot.get(rndInt(0, this.epicloot.size() - 1)));
+		                    ++i;
+		                }
+		                ChestListener.chests.put(e.getClickedBlock().getLocation(), inv);
+		            }
+		            e.getPlayer().openInventory(ChestListener.chests.get((Object)e.getClickedBlock().getLocation()));
+		        	e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+		        }
+	    	}
+	    }catch(Exception e1){ e1.printStackTrace(); }
     }
     
     public void registerLoot() {

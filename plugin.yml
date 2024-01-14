@@ -1,5 +1,5 @@
 name: SkyWars
-version: 1.0.0-SNAPSHOT
+version: 1.0.0
 author: dylogix
 main: de.dylogix.skywars.main.Main
 api-version: '1.20'
@@ -10,5 +10,3 @@ commands:
     description: Set game spawn locations
   start:
     description: Fast forward the lobby countdown to 5 seconds
-  test:
-    description: Simply for testing purposes

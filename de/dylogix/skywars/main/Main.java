@@ -11,8 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import de.dylogix.skywars.commands.BuildCommand;
 import de.dylogix.skywars.commands.SetSpawnCommand;
 import de.dylogix.skywars.commands.StartCommand;
-import de.dylogix.skywars.commands.TestCommand;
-import de.dylogix.skywars.gamestate.GameState;
+import de.dylogix.skywars.enums.GameState;
 import de.dylogix.skywars.guis.KitSelectionInventory;
 import de.dylogix.skywars.listener.BuildListener;
 import de.dylogix.skywars.listener.ChestListener;
@@ -34,7 +33,6 @@ public class Main extends JavaPlugin {
 	public static ArrayList<Player> buildoverride = new ArrayList<Player>();
 	public static ArrayList<Player> movelock = new ArrayList<Player>();
 	public static ArrayList<Player> alive = new ArrayList<Player>();
-	public static Boolean chestuse = false;
 	
 	public static File config;
 	public static YamlConfiguration cfg;
@@ -82,9 +80,6 @@ public class Main extends JavaPlugin {
 		getCommand("build").setExecutor(new BuildCommand());
 		getCommand("setspawn").setExecutor(new SetSpawnCommand());
 		getCommand("start").setExecutor(new StartCommand());
-		
-		// simply for testing purposes
-		getCommand("test").setExecutor(new TestCommand());
 		
 		ScoreboardHandler.startUpdatingBoard();
 		

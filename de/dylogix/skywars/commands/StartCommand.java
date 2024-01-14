@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.dylogix.skywars.gamestate.GameState;
+import de.dylogix.skywars.enums.GameState;
 import de.dylogix.skywars.main.Main;
 import de.dylogix.skywars.methods.GameStateHandler;
 
@@ -36,7 +36,6 @@ public class StartCommand implements CommandExecutor {
 				p.sendMessage(Main.prefix + "§cYou don't have the permission to use this command!");
 			}
 		}
-		
 		return true;
 	}
 

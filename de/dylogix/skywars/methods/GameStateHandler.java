@@ -6,7 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import de.dylogix.skywars.gamestate.GameState;
+import de.dylogix.skywars.enums.GameState;
 import de.dylogix.skywars.main.Main;
 
 public class GameStateHandler implements Listener{
@@ -66,6 +66,7 @@ public class GameStateHandler implements Listener{
 								all.getInventory().clear();
 								all.playSound(all, Sound.ENTITY_PLAYER_LEVELUP, 10.0F, 10.0F);
 								Main.alive.add(all);
+								KitHandler.giveKit(all);
 							}
 						}
 					} else {
@@ -102,7 +103,6 @@ public class GameStateHandler implements Listener{
 							Bukkit.getScheduler().cancelTask(game_countdown);
 							
 							Main.movelock.remove(all);
-							Main.chestuse = true;
 							
 							Main.gs = GameState.INGAME;
 							
@@ -167,7 +167,6 @@ public class GameStateHandler implements Listener{
 				all.setHealth(20);
 				all.setFoodLevel(20);
 				
-				Main.chestuse = false;
 				Bukkit.getScheduler().scheduleSyncDelayedTask(pl, () -> LocationHandler.teleportPlayerToLobby(all));
 				
 				all.sendTitle("§7» §f§lSkyWars §7«", "§a" + Main.alive.get(0).getName() + " §7won §aSkyWars§7!");

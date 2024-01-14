@@ -1,4 +1,4 @@
-package de.dylogix.skywars.gamestate;
+package de.dylogix.skywars.enums;
 
 public enum GameState {
 
