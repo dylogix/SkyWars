@@ -17,7 +17,7 @@ public class StartCommand implements CommandExecutor {
 		Player p = (Player) sender;
 		
 		if(cmd.getName().equalsIgnoreCase("start")) {
-			if(p.hasPermission("skywars.start") || p.hasPermission("skywars.*")) {
+			if(p.hasPermission("skywars.start") || p.hasPermission("skywars.*") || p.isOp()) {
 				if(Main.gs == GameState.LOBBY) {
 					if(!Bukkit.getScheduler().isCurrentlyRunning(GameStateHandler.lobby_countdown)){
 						if(GameStateHandler.lobby_counter > 6) {
